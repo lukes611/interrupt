@@ -17,11 +17,21 @@ Game:
 	clickable ground system
 
 
-
+ui types:
+	game start menu
+	choose game menu - st
+	pause menu: resume, save, saveas, exit
+	items/clues -> click on item/clue
+	logs -> read log
+	notes -> read past conversations
+	keys -> click on individual keys
+	settings -> sound volume
 
 1st to do:
 	2d vector
+
 	ui element classes:
+		box
 		labels
 		buttons
 		full text

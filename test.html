@@ -2,9 +2,11 @@
 
 <head>
 <script src="code/basics/LV2.js"></script>
+<script src="code/basics/jq.js"></script>
+<script src="code/basics/LUI.js"></script>
 </head>
 
-<body>
+<body style="background-color:black;">
 hi there
 <br/>
 game engine:
@@ -13,8 +15,10 @@ must have
 var v = new LV2(1, 2.5);
 var v2 = v.copy();
 document.write(v.toString());
-v2.add(v);
+v2.iadd(v);
 document.write(v2);
+var b = new LBox(100, 200, 'blue');
+b.show();
 </script>
 </body>
 
