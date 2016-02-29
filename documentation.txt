@@ -1,0 +1,18 @@
+
+LV2 - 2d vector class
+variables: x, y
+functions:
+	toString
+	copy
+	setAs
+	setValues
+	add/iadd
+	sub/isub
+	scale/iscale
+	div/idiv
+	dot
+	dist
+	mag
+	round
+	floor
+	

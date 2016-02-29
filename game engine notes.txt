@@ -1,0 +1,46 @@
+Game engine:
+
+Game:
+	detective game...
+	3d isometric game
+	point and click with text talking which tells a story
+	2d mini-games
+	collect items and logs to tell more of the story
+	collect types of keys
+	unlock doors, find clues
+	collect items
+	killer is walking around and is interactable
+	goal: progress and collect evidence
+	customizable characters
+	animation system , walking and grabbing actions....
+	ground system
+	clickable ground system
+
+
+
+
+1st to do:
+	2d vector
+	ui element classes:
+		labels
+		buttons
+		full text
+		up down left right buttons
+		check boxes
+		loading screen
+	container class
+	ui class
+
+2nd to do:
+	3d vector class
+	matrix class
+	obj class
+	drawing and animating
+
+classes:
+	vectors
+	matrices
+	UIs
+	models
+	animation
+UI
