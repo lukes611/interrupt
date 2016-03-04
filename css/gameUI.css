@@ -1,0 +1,45 @@
+
+.LBottomBox{
+	width: 70%;
+	height: 25%;
+	background-color: rgb(20,20,20);
+	bottom: 0%;
+	position: fixed;
+	overflow-x: None;
+	overflow-y: auto;
+	margin-left: 14.8%;
+	font-family: 'Trebuchet MS', Helvetica, sans-serif;
+}
+
+
+.LBottomGrid{
+	background-color: rgb(20,20,20);	
+	width: 100%;
+	height: 100%;
+	overflow-x: None;
+	overflow-y: auto;
+	font-family: 'Trebuchet MS', Helvetica, sans-serif;
+}
+
+
+.LButtonStyle0{
+	width: 30%;
+	height: 5%;
+	color: white;
+	cursor: pointer;
+	margin: 1%;
+	background-color: rgb(44, 44, 44);
+	padding: 3%;
+	text-align: center;
+}
+
+.LButtonStyle1{
+	width: 60%;
+	height: 50%;
+	color: white;
+	cursor: pointer;
+	margin: 0%;
+	background-color: rgb(44, 44, 44);
+	padding: 4%;
+	text-align: center;
+}

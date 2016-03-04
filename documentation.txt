@@ -15,4 +15,18 @@ functions:
 	mag
 	round
 	floor
+
+UI:
+	LBox
+	variables: elem (the jq element), subs (sub components)
+	functions: hide, show, add (adds subcomponent)
+	
+	LGrid
+	variables: elem (the jq element), subs, width and height
+
+	LLabel
+	variables: elem
+
+	LButton
+	variables: elem
 	

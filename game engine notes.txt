@@ -17,6 +17,22 @@ Game:
 	clickable ground system
 
 
+two sections: notes and logs, view items keys  = main box
+selector box: reading text, making choices up to 6 buttons, buttons to bring up menu and other options
+
+two
+
+typetext used in:
+	reading notes, logs -> back button -> rollover
+	interactive message box -> click next to rollover to multiple pages -> select speech to say
+
+	system:
+		message passing -> to output -> feedback to input
+		clicking to go to next phase, for selection... must click an item
+
+
+
+
 ui types:
 	game start menu
 	choose game menu - st
@@ -31,15 +47,7 @@ ui types:
 	2d vector
 
 	ui element classes:
-		box
-		labels
-		buttons
-		full text
-		up down left right buttons
-		check boxes
-		loading screen
-	container class
-	ui class
+		box, labels, buttons, full text, up down left right buttons, check boxes, loading box
 
 2nd to do:
 	3d vector class
