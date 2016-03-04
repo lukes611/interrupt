@@ -21,6 +21,10 @@ var hw = new LV2(512, 288);
 hw.idiv(2);
 hw.isub(new LV2(sqSize / 2, sqSize / 2));
 document.write(hw.toString());
+
+//going to warp it to iso
+var isoMat = LMat3.iso();
+
 canv.setStroke('rgb(255, 0, 0)');
 canv.setFill('rgb(20, 255, 50)');
 canv.rect(hw.x, hw.y, sqSize, sqSize);
