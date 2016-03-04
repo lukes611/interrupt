@@ -17,6 +17,11 @@ Game:
 	clickable ground system
 
 
+//redoing UI system, all in canvas
+//with game engine:
+//game engine has: flat to iso maker
+//3d to iso maker: ? 
+
 two sections: notes and logs, view items keys  = main box
 selector box: reading text, making choices up to 6 buttons, buttons to bring up menu and other options
 

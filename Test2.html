@@ -16,24 +16,70 @@ var canv = new LCanvas();
 canv.setFill('rgb(0,0,0)');
 canv.rectf(0, 0, 512, 288);
 var sqSize = 50;
-var hw = new LV2(512, 288);
+var hw = new LV2(0, 0);
 
-hw.idiv(2);
+//hw.idiv(2);
 hw.isub(new LV2(sqSize / 2, sqSize / 2));
 document.write(hw.toString());
 
 //going to warp it to iso
 var isoMat = LMat3.iso();
-
+console.log(isoMat.toString());
+canv.context.translate(0, 100);
+canv.transform(isoMat);
+var prx = new LV2(0, 0);
+function darr(){
 canv.setStroke('rgb(255, 0, 0)');
 canv.setFill('rgb(20, 255, 50)');
-canv.rect(hw.x, hw.y, sqSize, sqSize);
 
-var m = new LMat3();
-var a = new LMat3([2, 0, 0, 0, 2, 0, 0, 0, 2]);
-console.log(m.toString());
-console.log((a).toString());
-LMat3.print(a);
+for(var i = 0; i < 5; i++){
+	for(var j = 0; j < 5; j++){
+		var s = 50;
+		if(prx.x == i && prx.y == j)
+			canv.setStroke('blue');
+		else canv.setStroke('red');
+		canv.rect(i*s, j*s, s, s);
+	}
+}
+}
+console.log(':');
+var xxx = LMat3.iso().mult(LMat3.iiso());
+for(var i = 0; i < 9; i++) xxx.arr[i] = Math.round(xxx.arr[i]);
+console.log(xxx.toString());
+function draw(){
+	canv.resetTransform();
+	canv.setFill('black');
+	canv.rectf(0, 0, 512, 288);
+	var ax = LMat3.iso();
+	var bx = LMat3.iiso();
+	canv.transform(ax);
+	//canv.transform(bx);
+	//canv.transform(LMat3.iso());
+	darr();
+	requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+        };
+      }
+
+canv.canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos(canv.canvas, evt);
+        var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
+        var p = new LV2(mousePos.x, mousePos.y);
+        var iiso = LMat3.iiso();
+        p = iiso.multLV2(p);
+        p.idiv(50);
+        p.x = Math.floor(p.x);
+        p.y = Math.floor(p.y);
+        prx = p;
+        console.log(p.toString());
+      }, false);
 
 </script>
 </body>
