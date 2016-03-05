@@ -350,4 +350,52 @@ LMat3.rotate = function(angle){
 };
 
 //LMat4
+function LMat4(inp){
+	if(inp === undefined)
+		this.arr = [0, 0, 0, 0,
+					0, 0, 0, 0,
+					0, 0, 0, 0,
+					0, 0, 0, 0];
+	else
+		this.arr = inp;
+}
 
+LMat4.prototype.toString = function(){
+	return '|' + this.arr[0] + ',' + this.arr[1] + ',' + this.arr[2] + ',' + this.arr[3] + '|\n' + 
+		   '|' + this.arr[4] + ',' + this.arr[5] + ',' + this.arr[6] + ',' + this.arr[7] + '|\n' + 
+		   '|' + this.arr[8] + ',' + this.arr[9] + ',' + this.arr[10] + ',' + this.arr[11] + '|\n' + 
+		   '|' + this.arr[12] + ',' + this.arr[13] + ',' + this.arr[14] + ',' + this.arr[15] + '|\n';
+};
+
+LMat4.prototype.copy = function(){
+	return new LMat4(this.arr.slice());
+};
+
+LMat3.prototype.itranspose = function(){
+	this.arr = [
+		this.arr[0], this.arr[4], this.arr[8], this.arr[12],
+		this.arr[1], this.arr[5], this.arr[9], this.arr[13],
+		this.arr[2], this.arr[6], this.arr[10], this.arr[14],
+		this.arr[3], this.arr[7], this.arr[11], this.arr[15]
+	];
+};
+
+LMat3.prototype.transpose = function(){
+	return new LMat4([
+		this.arr[0], this.arr[4], this.arr[8], this.arr[12],
+		this.arr[1], this.arr[5], this.arr[9], this.arr[13],
+		this.arr[2], this.arr[6], this.arr[10], this.arr[14],
+		this.arr[3], this.arr[7], this.arr[11], this.arr[15]
+	]);
+};
+
+LMat4.zero = function(){
+	return new LMat4();
+};
+
+LMat4.identity = function(){
+	return new LMat4([1, 0, 0, 0,
+					  0, 1, 0, 0,
+					  0, 0, 1, 0,
+					  0, 0, 0, 1]);
+};
