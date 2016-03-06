@@ -83,8 +83,17 @@ canv.canvas.addEventListener('mousemove', function(evt) {
 
 
 var g = new LMat4();
-console.log(g);console.log(g.toString());
-console.log(LMat4.identity().toString());
+//console.log(g);console.log(g.toString());
+//console.log(LMat4.identity().toString());
+
+var ry = LMat4.rotateY(180);
+
+g = new LV3(2, 10, 0);
+console.log(g.toString());
+g = ry.multLV3(g);
+console.log(g.toString());
+
+
 </script>
 </body>
 
