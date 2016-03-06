@@ -90,9 +90,9 @@ var ry = LMat4.rotateY(180);
 
 g = new LV3(2, 10, 0);
 console.log(g.toString());
-g = ry.multLV3(g);
+//g = ry.multLV3(g);
 console.log(g.toString());
-
+console.log(LMat4.scale(0.5).multLV3(g).toString());
 
 </script>
 </body>

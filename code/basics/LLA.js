@@ -349,6 +349,27 @@ LMat3.rotate = function(angle){
 	return new LMat3([cosine, -sinus, 0, sinus, cosine, 0, 0, 0, 1]);
 };
 
+LMat3.rotateX = function(angle){
+	angle *= 0.0174533;
+	var cosine = Math.cos(angle);
+	var sinus = Math.sin(angle);
+	return new LMat3([1, 0, 0, 0, cosine, -sinus, 0, sinus, cosine]);
+};
+
+LMat3.rotateY = function(angle){
+	angle *= 0.0174533;
+	var cosine = Math.cos(angle);
+	var sinus = Math.sin(angle);
+	return new LMat3([cosine, 0, sinus, 0, 1, 0, -sinus, 0, cosine]);
+};
+
+LMat3.rotateZ = function(angle){
+	angle *= 0.0174533;
+	var cosine = Math.cos(angle);
+	var sinus = Math.sin(angle);
+	return new LMat3([cosine, -sinue, 0, sinus, cosine, 0, 0, 0, 1]);
+};
+	
 //LMat4
 function LMat4(inp){
 	if(inp === undefined)
