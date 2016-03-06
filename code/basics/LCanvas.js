@@ -6,6 +6,10 @@ function LCanvas(){
 	this.h = this.canvas.height;
 }
 
+LCanvas.prototype.getCenter = function(){
+	return new LV2(this.w * 0.5, this.h * 0.5);
+};
+
 LCanvas.prototype.setStroke = function(color){
 	this.context.strokeStyle = color;
 };

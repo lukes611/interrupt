@@ -4,7 +4,7 @@
 <script src="code/basics/LLA.js"></script>
 <script src="code/basics/jq.js"></script>
 <script src="code/basics/LCanvas.js"></script>
-<script src="code/basics/LMat3.js"></script>
+<script src="code/basics/Liso.js"></script>
 </head>
 
 <body>
@@ -29,18 +29,18 @@ canv.context.translate(0, 100);
 canv.transform(isoMat);
 var prx = new LV2(0, 0);
 function darr(){
-canv.setStroke('rgb(255, 0, 0)');
-canv.setFill('rgb(20, 255, 50)');
+	canv.setStroke('rgb(255, 0, 0)');
+	canv.setFill('rgb(20, 255, 50)');
 
-for(var i = 0; i < 5; i++){
-	for(var j = 0; j < 5; j++){
-		var s = 50;
-		if(prx.x == i && prx.y == j)
-			canv.setStroke('blue');
-		else canv.setStroke('red');
-		canv.rect(i*s, j*s, s, s);
+	for(var i = 0; i < 5; i++){
+		for(var j = 0; j < 5; j++){
+			var s = 50;
+			if(prx.x == i && prx.y == j)
+				canv.setStroke('blue');
+			else canv.setStroke('red');
+			canv.rect(i*s, j*s, s, s);
+		}
 	}
-}
 }
 console.log(':');
 var xxx = LMat3.iso().mult(LMat3.iiso());
@@ -54,8 +54,51 @@ function draw(){
 	var bx = LMat3.iiso();
 	canv.transform(ax);
 	//canv.transform(bx);
-	//canv.transform(LMat3.iso());
+	//canv.transform(LMat3.iso().mult(LMat3.iiso()));
 	darr();
+
+	canv.resetTransform();
+	canv.setStroke('green');
+	//var p1 = Liso.screen2Tile();
+	//var p2 = canv.getCenter();
+	//p1.iscale(20);
+	//var p3 = p1.copy();
+	//p1.iadd(p2);
+	//p1.round();
+	//p2.round();
+	//console.log(p1.toString() + p2.toString());
+	//console.log(p1.toString());
+	
+	//console.log(p2.toString());
+	//console.log(p1.toString());
+	//canv.line(p2.x, p2.y, p1.x, p1.y);
+	//canv.line(0,0, p3.x, p3.y);
+
+	/*for(var z = 0; z < 5; z++){
+		for(var x = 0; x < 5; x++){
+			var pnts = [new LV3(x, 0, z), new LV3(x+1, 0, z), new LV3(x+1, 0, z+1), new LV3(x, 0, z+1)];
+			for(var i = 0; i < 4; i++){
+				var j = (i+1)%4;
+				var a = pnts[i].copy();
+				var b = pnts[j].copy();
+				a.iscale(50);
+				b.iscale(50);
+				var k = Liso.iso44();
+				a = k.multLV3(a);
+				b = k.multLV3(b);
+				var k2 = Liso.iiso44();
+				//a = k2.multLV3(a);
+				//b = k2.multLV3(b);
+				a.round();
+				b.round();
+				console.log(a.toString());
+				//console.log(k.toString());
+				//console.log(a.toString());
+				canv.line(a.x, a.y, b.x, b.y);
+			}
+		}
+	}
+	*/
 	requestAnimationFrame(draw);
 }
 requestAnimationFrame(draw);
@@ -72,13 +115,10 @@ canv.canvas.addEventListener('mousemove', function(evt) {
         var mousePos = getMousePos(canv.canvas, evt);
         var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
         var p = new LV2(mousePos.x, mousePos.y);
-        var iiso = LMat3.iiso();
-        p = iiso.multLV2(p);
+        p = Liso.screen2Tile(p);
         p.idiv(50);
-        p.x = Math.floor(p.x);
-        p.y = Math.floor(p.y);
+        p.floor();
         prx = p;
-        console.log(p.toString());
       }, false);
 
 

@@ -98,7 +98,7 @@ LV2.prototype.idiv = function(s){
 };
 
 LV2.prototype.dot = function(o){
-	return this.x * o.y - this.y * o.x;
+	return this.x * o.y + this.y * o.x;
 };
 
 LV2.prototype.dist = function(o){
