@@ -1,0 +1,91 @@
+<html>
+
+<head>
+<script src="code/basics/LLA.js"></script>
+<script src="code/basics/jq.js"></script>
+<script src="code/basics/LCanvas.js"></script>
+<script src="code/basics/Liso.js"></script>
+</head>
+
+<body>
+<div id="output"></div>
+<canvas id="myCanvas" width="1200" height="700"></canvas>
+<script>
+
+var count = 0;
+var canv = new LCanvas();
+function clearScreen(){ canv.setFill('black'); canv.rectf(0, 0, canv.w, canv.h);}
+var sqSize = 100;
+
+//going to warp it to iso
+var iso33 = Liso.iso33();
+
+var iso44 = Liso.iso44();
+
+var mouse = new LV2(0, 0);
+
+function map(){
+	canv.transform(iso33);
+	canv.setStroke('orange');
+	for(var i = 0; i < 10; i++){
+		for(var j = 0; j < 5; j++){
+			var x = i;
+			var y = j;
+			canv.rect(x*sqSize, y*sqSize, sqSize, sqSize);
+		}
+	}
+	canv.setStroke('green');
+	canv.rect(mouse.x*sqSize, mouse.y*sqSize, sqSize, sqSize);
+	canv.resetTransform();
+}
+function draw(){
+	clearScreen();
+	map();
+
+	canv.setStroke('blue');
+	
+	
+	for(var z = 0; z < 5*sqSize; z+=sqSize){
+		for(var x = 0; x < 5*sqSize; x+=sqSize){
+			var pnts = [new LV3(x, 0, z), new LV3(x+sqSize, 0, z),
+			new LV3(x+sqSize, 0, z+sqSize), new LV3(x, 0, z+sqSize)];
+			for(var i = 0; i < 4; i++){pnts[i] = iso44.multLV3(pnts[i]);}
+			for(var i = 0; i < 4; i++){
+				var j = (i+1)%4;
+				var a = pnts[i];
+				var b = pnts[j];
+				a.round();
+				b.round();
+				canv.line(a.x, a.y, b.x, b.y);
+			}
+		}
+	}
+	requestAnimationFrame(draw);
+}
+requestAnimationFrame(draw);
+
+function getMousePos(canvas, evt) {
+	var rect = canvas.getBoundingClientRect();
+	return {
+		x: evt.clientX - rect.left,
+		y: evt.clientY - rect.top
+	};
+}
+
+canv.canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = getMousePos(canv.canvas, evt);
+        var p = new LV2(mousePos.x, mousePos.y);
+        p = Liso.screen2Tile(p);
+        p.idiv(sqSize);
+        p.floor();
+        mouse = p;
+      }, false);
+
+$(canv.canvas).click(function(){
+	$('#output').html(mouse.toString());
+});
+
+</script>
+</body>
+
+</html>
