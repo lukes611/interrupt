@@ -21,6 +21,16 @@ Game:
 //with game engine:
 //game engine has: flat to iso maker
 //3d to iso maker: ? 
+//grid-system and click system?
+	3d click system
+	draw floor, iterate and draw other items
+	draw square, draw selection
+	implement basic map
+	clicking and drawing:
+		3d-points
+		map
+		->draw map
+
 
 two sections: notes and logs, view items keys  = main box
 selector box: reading text, making choices up to 6 buttons, buttons to bring up menu and other options

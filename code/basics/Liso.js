@@ -1,18 +1,25 @@
-
 function Liso(){
 
 }
 
-Liso.iso44 = function(){
-	return LMat4.rotateX(30).mult(LMat4.rotateY(45));
+Liso.iso44 = function(p){
+	if(p === undefined)
+		return LMat4.rotateX(30).mult(LMat4.rotateY(45));
+	return LMat4.rotateX(30).mult(LMat4.rotateY(45).mult(LMat4.trans(-p.x, -p.y, -p.z)));
 };
 
 Liso.iiso44 = function(){
 	return LMat4.rotateX(30).mult(LMat4.rotateY(45)).transpose();
 };
 
-Liso.iso33 = function(){
-	return LMat3.rotateX(30).mult(LMat3.rotateY(45).mult(LMat3.rotateX(90)));
+Liso.iso33 = function(p){
+	if(p === undefined)
+		return LMat3.rotateX(30).mult(LMat3.rotateY(45).mult(LMat3.rotateX(90)));
+	return LMat3.rotateX(30).mult(LMat3.rotateY(45).mult(LMat3.rotateX(90).mult(LMat3.trans(-p.x, -p.y))));
+};
+
+Liso.iiso = function(){
+	return LMat3.rotateX(30).mult(LMat3.rotateY(45).mult(LMat3.rotateX(90))).transpose();
 };
 
 
@@ -33,7 +40,11 @@ LMat3.iiso = function(){
 	return LMat3.rotateX(30).mult(LMat3.rotateY(45).mult(LMat3.rotateX(90))).transpose();	
 };
 
-
+function LisoMap(w, h){
+	this.w = w;
+	this.h = h;
+	this.focus = new LV2(0, 0);
+}
 
 
 
