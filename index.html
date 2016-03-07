@@ -9,7 +9,8 @@
 
 <body style="padding:0px;margin:0px;">
 <div id="output"></div>
-<canvas id="myCanvas" width="960" height="540"></canvas>
+<!-- good size 960,540-->
+<canvas id="myCanvas" width="400" height="220"></canvas>
 <script>
 
 /*
@@ -18,32 +19,35 @@ todo:
 		outliers for the map
 		setup 
 		setup a panning system
-
-
 */
-
-var focus = new LV3(0, 0, 0);
+var mouseTile = new LV3(0, 0, 0);
+var map = new LisoMap(10, 10);
+console.log(map.focus.toString(), map.tileSize);
 function addFocus(){
-	var f2 = focus.copy();
+	var f2 = map.focus.copy();
 	f2.idiv(25);
 	f2.floor();
-	$('#output').html(focus.toString()
+	$('#output').html(map.focus.toString()
 		+ '<br/>'
-		+ f2.toString());
+		+ f2.toString() + '<br/>'+
+		'mouse tile: ' + mouseTile.toString());
 }
 
 $(document.body).keydown(function(e){
 	//console.log(e);
 	var key = e.keyCode;
+	var sc = 5;
 	console.log(key);
-	if(key == 87){
-		focus.x += 0.8;
-	}else if(key == 83){
-		focus.x -= 0.8;
-	}else if(key == 65){
-		focus.z += 0.8;
-	}else if(key == 68){
-		focus.z -= 0.8;
+	if(key == 87){//w
+		map.moveUp(sc);
+	}else if(key == 83){//s
+		map.moveDown(sc);
+	}else if(key == 65){//a
+		map.moveLeft(sc);
+	}else if(key == 68){//d
+		map.moveRight(sc);
+	}else if(key == 48){//'0'
+		map.focus.iscale(0);
 	}
 });
 
@@ -51,7 +55,6 @@ $(document.body).keydown(function(e){
 var count = 0;
 var canv = new LCanvas();
 function clearScreen(){ canv.setFill('black'); canv.rectf(0, 0, canv.w, canv.h);}
-var sqSize = 25;
 
 //going to warp it to iso
 var iso33 = Liso.iso33();
@@ -59,20 +62,22 @@ var iso33 = Liso.iso33();
 var iso44 = Liso.iso44();
 var hw = canv.getCenter();
 
-var fsz = [-0, 3];
-var fsx = [-0, 1];
+var fsz = [-10, 10];
+var fsx = [-4, 4];
 	
 
-var mouse = new LV2(0, 0);
 
-function map(){
+
+function map1(){
 	
 	canv.context.translate(hw.x, hw.y);
 	canv.transform(iso33);
 	canv.setStroke('orange');
 	for(var y = fsz[0]; y < fsz[1]; y++){
 		for(var x = fsx[0]; x < fsx[1]; x++){
-			canv.rect(x*sqSize, y*sqSize, sqSize, sqSize);
+			if(!map.inBounds(x, y)) continue;
+			canv.setFill(map.get(x, y));
+			canv.rectf(x*map.tileSize, y*map.tileSize, map.tileSize, map.tileSize);
 		}
 	}
 	canv.resetTransform();
@@ -83,11 +88,13 @@ function map2(){
 	canv.context.translate(hw.x, hw.y);
 	
 	for(var zi = fsz[0]; zi < fsz[1]; zi++){
-		var z = zi*sqSize;
+		var z = zi*map.tileSize;
 		for(var xj = fsx[0]; xj < fsx[1]; xj++){
-			var x = xj*sqSize;
-			var pnts = [new LV3(x, 0, z), new LV3(x+sqSize, 0, z),
-			new LV3(x+sqSize, 0, z+sqSize), new LV3(x, 0, z+sqSize)];
+			if(!map.inBounds(xj, zi)) continue;
+			canv.setStroke(map.get(xj, zi));
+			var x = xj*map.tileSize;
+			var pnts = [new LV3(x, 0, z), new LV3(x+map.tileSize, 0, z),
+			new LV3(x+map.tileSize, 0, z+map.tileSize), new LV3(x, 0, z+map.tileSize)];
 			for(var i = 0; i < 4; i++){pnts[i] = iso44.multLV3(pnts[i]);}
 			for(var i = 0; i < 4; i++){
 				var j = (i+1)%4;
@@ -107,19 +114,30 @@ function drawSelection(){
 	canv.context.translate(hw.x, hw.y);
 	canv.transform(iso33);
 	canv.setStroke('green');
-	canv.rect(mouse.x*sqSize, mouse.y*sqSize, sqSize, sqSize);
+	canv.rect(mouseTile.x*map.tileSize, mouseTile.z*map.tileSize, map.tileSize, map.tileSize);
 	canv.resetTransform();
 
 }
 
 function draw(){
-	var focusLV2 = new LV2(focus.x, focus.z);
+
+	var focusLV2 = new LV2(map.focus.x, map.focus.z);
 	iso33 = Liso.iso33(focusLV2);
-	iso44 = Liso.iso44(focus);
+	iso44 = Liso.iso44(map.focus);
+
+	var focusFloored = map.focus.copy();
+	focusFloored.idiv(map.tileSize);
+	focusFloored.floor();
+
+	fsx[0] = focusFloored.x - 20;
+	fsx[1] = focusFloored.x + 20;
+	fsz[0] = focusFloored.z - 20;
+	fsz[1] = focusFloored.z + 20;
+	//console.log(fsx, fsz);
 
 	clearScreen();
-	map();
-	map2();
+	map1();
+	//map2();
 	drawSelection();
 	addFocus();
 	requestAnimationFrame(draw);
@@ -138,21 +156,15 @@ canv.canvas.addEventListener('mousemove', function(evt) {
         var mousePos = getMousePos(canv.canvas, evt);
         var p = new LV2(mousePos.x, mousePos.y);
         p.isub(hw);
-        var tmp = new LV2(-focus.x, -focus.z);
-        //p.isub(tmp);
-        p = Liso.screen2Tile(p);
-        //console.log(p.toString());
-		p.isub(tmp);
-		//console.log(p.toString());
-        p.idiv(sqSize);
-
-        p.floor();
-        console.log(p.toString());
-        mouse = p;
+        mouseTile = map.screen2Tile(p);
       }, false);
 
 $(canv.canvas).click(function(){
 	//$('#output').html(mouse.toString());
+	var mt = mouseTile.copy();
+	if(map.inBounds(mt.x, mt.z)){
+		map.set(mt.x, mt.z, 'red');
+	}
 });
 
 </script>
