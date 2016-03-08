@@ -10,15 +10,13 @@
 <body style="padding:0px;margin:0px;">
 <div id="output"></div>
 <!-- good size 960,540-->
-<canvas id="myCanvas" width="400" height="220"></canvas>
+<!--<canvas id="myCanvas" width="960" height="540"></canvas>-->
 <script>
 
 /*
 todo:
 	setup map object:
-		outliers for the map
-		setup 
-		setup a panning system
+		
 */
 var mouseTile = new LV3(0, 0, 0);
 var map = new LisoMap(10, 10);
@@ -53,7 +51,12 @@ $(document.body).keydown(function(e){
 
 
 var count = 0;
-var canv = new LCanvas();
+var canv = new LCanvas(960, 540);
+var im = undefined;
+var img = LCanvas.image('tile.png', 25, 25, function(imIn){
+	im = imIn;
+});
+document.body.appendChild(canv.canvas);
 function clearScreen(){ canv.setFill('black'); canv.rectf(0, 0, canv.w, canv.h);}
 
 //going to warp it to iso
@@ -114,7 +117,9 @@ function drawSelection(){
 	canv.context.translate(hw.x, hw.y);
 	canv.transform(iso33);
 	canv.setStroke('green');
-	canv.rect(mouseTile.x*map.tileSize, mouseTile.z*map.tileSize, map.tileSize, map.tileSize);
+	//canv.rect(mouseTile.x*map.tileSize, mouseTile.z*map.tileSize, map.tileSize, map.tileSize);
+	if(im !== undefined)
+		canv.dimage(mouseTile.x*map.tileSize, mouseTile.z*map.tileSize, im);
 	canv.resetTransform();
 
 }
@@ -139,6 +144,8 @@ function draw(){
 	map1();
 	//map2();
 	drawSelection();
+	if(im !== undefined)
+		canv.dimage(0, 0, im);
 	addFocus();
 	requestAnimationFrame(draw);
 }

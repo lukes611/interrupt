@@ -1,9 +1,11 @@
-function LCanvas(){
+function LCanvas(w, h){
 	this.idName = "myCanvas";
-	this.canvas = document.getElementById(this.idName);
+	this.canvas = document.createElement('canvas');
+	this.canvas.width = w;
+	this.canvas.height = h;
 	this.context = this.canvas.getContext('2d');
-	this.w = this.canvas.width;
-	this.h = this.canvas.height;
+	this.w = w;
+	this.h = h;
 }
 
 LCanvas.prototype.getCenter = function(){
@@ -44,6 +46,22 @@ LCanvas.prototype.line = function(x, y, x2, y2){
 	this.context.moveTo(x, y);
 	this.context.lineTo(x2, y2);
 	this.context.stroke();
-}; 
+};
+
+LCanvas.prototype.dimage = function(x, y, im){
+	this.context.drawImage(im.canvas, x, y);
+};
+
+LCanvas.image = function(name, w, h, cb){
+	var img = new Image();
+	img.onload = function(){
+		var rv = new LCanvas(w, h);
+		rv.context.drawImage(img, 0, 0, w, h);
+		cb(rv);
+	};
+	img.src = name;
+};
+
+
 
 
