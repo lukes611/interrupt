@@ -15,10 +15,10 @@ Liso.iiso44 = function(){
 Liso.iso33 = function(p){
 	if(p === undefined)
 		return LMat3.rotateX(30).mult(LMat3.rotateY(45).mult(LMat3.rotateX(90)));
-	return LMat3.rotateX(30).mult(LMat3.rotateY(45).mult(LMat3.rotateX(90).mult(LMat3.trans(-p.x, -p.y))));
+	return LMat3.rotateX(30).mult(LMat3.rotateY(45).mult(LMat3.rotateX(90).mult(LMat3.trans(-p.x, -p.z))));
 };
 
-Liso.iiso = function(){
+Liso.iiso33 = function(){
 	return LMat3.rotateX(30).mult(LMat3.rotateY(45).mult(LMat3.rotateX(90))).transpose();
 };
 
@@ -94,6 +94,19 @@ LisoMap.prototype.screen2Tile = function(screenPoint){
 	return rv;	
 };
 
-
+LisoMap.prototype.tileCorner = function(index, pos3d){
+	var p3d = pos3d.copy();
+	var m = Liso.iso33(this.focus);
+	if(index == 1){
+		p3d.x += 1;
+	}else if(index == 2){
+		p3d.x += 1;
+		p3d.z += 1;
+	}else if(index == 3){
+		p3d.z += 1;
+	}
+	p3d.iscale(this.tileSize);
+	return m.multLV3(new LV3(p3d.x, p3d.z, 1));
+};
 
 

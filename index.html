@@ -31,29 +31,13 @@ function addFocus(){
 		'mouse tile: ' + mouseTile.toString());
 }
 
-$(document.body).keydown(function(e){
-	//console.log(e);
-	var key = e.keyCode;
-	var sc = 5;
-	console.log(key);
-	if(key == 87){//w
-		map.moveUp(sc);
-	}else if(key == 83){//s
-		map.moveDown(sc);
-	}else if(key == 65){//a
-		map.moveLeft(sc);
-	}else if(key == 68){//d
-		map.moveRight(sc);
-	}else if(key == 48){//'0'
-		map.focus.iscale(0);
-	}
-});
+
 
 
 var count = 0;
 var canv = new LCanvas(960, 540);
 var im = undefined;
-var img = LCanvas.image('tile.png', 25, 25, function(imIn){
+var img = LCanvas.image('tile.png', 50, 50, function(imIn){
 	im = imIn;
 });
 document.body.appendChild(canv.canvas);
@@ -122,12 +106,12 @@ function drawSelection(){
 		canv.dimage(mouseTile.x*map.tileSize, mouseTile.z*map.tileSize, im);
 	canv.resetTransform();
 
-}
+}  
 
 function draw(){
 
-	var focusLV2 = new LV2(map.focus.x, map.focus.z);
-	iso33 = Liso.iso33(focusLV2);
+	//var focusLV2 = new LV2(map.focus.x, map.focus.z);
+	iso33 = Liso.iso33(map.focus);
 	iso44 = Liso.iso44(map.focus);
 
 	var focusFloored = map.focus.copy();
@@ -136,16 +120,25 @@ function draw(){
 
 	fsx[0] = focusFloored.x - 20;
 	fsx[1] = focusFloored.x + 20;
-	fsz[0] = focusFloored.z - 20;
+	fsz[0]=  focusFloored.z - 20;
 	fsz[1] = focusFloored.z + 20;
 	//console.log(fsx, fsz);
 
 	clearScreen();
+
 	map1();
-	//map2();
+	map2();
 	drawSelection();
-	if(im !== undefined)
-		canv.dimage(0, 0, im);
+	canv.resetTransform();
+	canv.setStroke('green');
+	for(var i = 0; i < 4; i++){
+		var ann = map.tileCorner(i, new LV3(5,0,2) );
+		ann.iadd(new LV3(hw.x, hw.y, 0));
+		canv.line(ann.x, ann.y, ann.x, ann.y-40);
+	}
+
+	//if(im !== undefined)
+	//	canv.dimage(0, 0, im);
 	addFocus();
 	requestAnimationFrame(draw);
 }
@@ -166,11 +159,33 @@ canv.canvas.addEventListener('mousemove', function(evt) {
         mouseTile = map.screen2Tile(p);
       }, false);
 
-$(canv.canvas).click(function(){
+$(canv.canvas).click(function(e){
 	//$('#output').html(mouse.toString());
 	var mt = mouseTile.copy();
 	if(map.inBounds(mt.x, mt.z)){
 		map.set(mt.x, mt.z, 'red');
+	}
+
+});
+
+$(document.body).keydown(function(e){
+	//console.log(e);
+	var key = e.keyCode;
+	var sc = 5;
+	console.log(key);
+	if(key == 87){//w
+		map.moveUp(sc);
+	}else if(key == 83){//s
+		map.moveDown(sc);
+	}else if(key == 65){//a
+		map.moveLeft(sc);
+	}else if(key == 68){//d
+		map.moveRight(sc);
+	}else if(key == 48){//'0'
+		map.focus.iscale(0);
+	}else if(key == 73){//i
+		var url = canv.canvas.toDataURL();
+		window.open(url);
 	}
 });
 
