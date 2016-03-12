@@ -119,7 +119,7 @@ LisoMap.prototype.screen2Tile = function(screenPoint){
 	var rv = Liso.screen2Tile(screenPoint);
 	rv.iadd(this.focus);
 	rv.idiv(this.tileSize);
-	rv.floor();
+	rv.ifloor();
 	return rv;	
 };
 

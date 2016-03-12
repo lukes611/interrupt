@@ -112,11 +112,19 @@ LV2.prototype.mag = function(){
 };
 
 LV2.prototype.round = function(){
+	return new LV2(Math.round(this.x), Math.round(this.y));
+};
+
+LV2.prototype.floor = function(){
+	return new LV2(Math.floor(this.x), Math.floor(this.y));
+};
+
+LV2.prototype.iround = function(){
 	this.x = Math.round(this.x);
 	this.y = Math.round(this.y);
 };
 
-LV2.prototype.floor = function(){
+LV2.prototype.ifloor = function(){
 	this.x = Math.floor(this.x);
 	this.y = Math.floor(this.y);
 };
@@ -223,16 +231,25 @@ LV3.prototype.mag = function(){
 };
 
 LV3.prototype.round = function(){
+	return new LV3(Math.round(this.x), Math.round(this.y), Math.round(this.z));
+};
+
+LV3.prototype.floor = function(){
+	return new LV3(Math.floor(this.x), Math.floor(this.y), Math.floor(this.z));
+};
+
+LV3.prototype.iround = function(){
 	this.x = Math.round(this.x);
 	this.y = Math.round(this.y);
 	this.z = Math.round(this.z);
 };
 
-LV3.prototype.floor = function(){
+LV3.prototype.ifloor = function(){
 	this.x = Math.floor(this.x);
 	this.y = Math.floor(this.y);
 	this.z = Math.floor(this.z);
 };
+
 
 LV3.prototype.unit = function(){
 	var m = Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z);

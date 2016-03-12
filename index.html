@@ -15,17 +15,13 @@
 
 /*
 todo:
-	setup map object - make it more generic
-	to make it resize accordingly
 	an app to create walls and tiles
+	:tiles, walls, door/walls, objects
 */
 var mouseTile = new LV3(0, 0, 0);
 var map = new LisoMap(10, 10);
-console.log(map.focus.toString(), map.tileSize);
 function addFocus(){
-	var f2 = map.focus.copy();
-	f2.idiv(25);
-	f2.floor();
+	var f2 = map.focus.copy().div(25).floor();
 	$('#output').html(map.focus.toString()
 		+ '<br/>'
 		+ f2.toString() + '<br/>'+
@@ -38,7 +34,7 @@ function addFocus(){
 var count = 0;
 var canv = new LCanvas(960, 540);
 var im = undefined;
-var img = LCanvas.image('tile.png', 50, 50, function(imIn){
+LCanvas.image('tile.png', 50, 50, function(imIn){
 	im = imIn;
 });
 document.body.appendChild(canv.canvas);
@@ -93,8 +89,8 @@ function map2(){
 				var j = (i+1)%4;
 				var a = pnts[i];
 				var b = pnts[j];
-				a.round();
-				b.round();
+				a.iround();
+				b.iround();
 				canv.line(a.x, a.y, b.x, b.y);
 			}
 		}
@@ -130,7 +126,7 @@ function draw(){
 
 	var focusFloored = map.focus.copy();
 	focusFloored.idiv(map.tileSize);
-	focusFloored.floor();
+	focusFloored.ifloor();
 
 	fsx[0] = focusFloored.x - 20;
 	fsx[1] = focusFloored.x + 20;
