@@ -15,8 +15,9 @@
 
 /*
 todo:
-	setup map object:
-		
+	setup map object - make it more generic
+	to make it resize accordingly
+	an app to create walls and tiles
 */
 var mouseTile = new LV3(0, 0, 0);
 var map = new LisoMap(10, 10);
@@ -63,8 +64,13 @@ function map1(){
 	for(var y = fsz[0]; y < fsz[1]; y++){
 		for(var x = fsx[0]; x < fsx[1]; x++){
 			if(!map.inBounds(x, y)) continue;
-			canv.setFill(map.get(x, y));
-			canv.rectf(x*map.tileSize, y*map.tileSize, map.tileSize, map.tileSize);
+			if(!map.hasTile(x, y)){
+				//canv.setStroke('white');
+				//canv.rect(x*map.tileSize, y*map.tileSize, map.tileSize, map.tileSize);
+			}else{
+
+				canv.dimage(x*map.tileSize, y*map.tileSize, im);
+			}
 		}
 	}
 	canv.resetTransform();
@@ -78,7 +84,7 @@ function map2(){
 		var z = zi*map.tileSize;
 		for(var xj = fsx[0]; xj < fsx[1]; xj++){
 			if(!map.inBounds(xj, zi)) continue;
-			canv.setStroke(map.get(xj, zi));
+			//canv.setStroke(map.getTile(xj, zi));
 			var x = xj*map.tileSize;
 			var pnts = [new LV3(x, 0, z), new LV3(x+map.tileSize, 0, z),
 			new LV3(x+map.tileSize, 0, z+map.tileSize), new LV3(x, 0, z+map.tileSize)];
@@ -108,6 +114,14 @@ function drawSelection(){
 
 }  
 
+function drawOutline(){
+	canv.context.translate(hw.x, hw.y);
+	canv.transform(iso33);
+	canv.setStroke('blue');
+	canv.rect(0, 0, map.w*map.tileSize, map.h*map.tileSize);
+	canv.resetTransform();
+}
+
 function draw(){
 
 	//var focusLV2 = new LV2(map.focus.x, map.focus.z);
@@ -127,7 +141,7 @@ function draw(){
 	clearScreen();
 
 	map1();
-	map2();
+	//map2();
 	drawSelection();
 	canv.resetTransform();
 	canv.setStroke('green');
@@ -136,7 +150,10 @@ function draw(){
 		ann.iadd(new LV3(hw.x, hw.y, 0));
 		canv.line(ann.x, ann.y, ann.x, ann.y-40);
 	}
-
+	var tmp = map.position2Screen(new LV3(5.5, 0, 2.5));
+	tmp.iadd(new LV3(hw.x, hw.y, 0));
+	canv.line(tmp.x, tmp.y, 0, 0);
+	drawOutline();
 	//if(im !== undefined)
 	//	canv.dimage(0, 0, im);
 	addFocus();
@@ -163,7 +180,7 @@ $(canv.canvas).click(function(e){
 	//$('#output').html(mouse.toString());
 	var mt = mouseTile.copy();
 	if(map.inBounds(mt.x, mt.z)){
-		map.set(mt.x, mt.z, 'red');
+		map.setTile(mt.x, mt.z, 'tile');
 	}
 
 });
@@ -190,6 +207,14 @@ $(document.body).keydown(function(e){
 });
 
 </script>
+
+<div>
+input map size:<br/>
+w = <input type="text" id="mapInputWidth" value="30" /><br/>
+h = <input type="text" id="mapInputHeight" value="60" /><br/>
+<button onclick="(function(){var x = Number($('#mapInputWidth').val()); var y = Number($('#mapInputHeight').val()); map.resize(x,y);})();" >submit</button>
+</div>
+
 </body>
 
 </html>

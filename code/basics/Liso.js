@@ -61,12 +61,41 @@ function LisoMap(w, h){
 	this.focus = new LV3(0, 0, 0);
 	this.tileSize = 25;
 	this.tiles = new Array(this.w * this.h);
-	for(var i = 0; i < this.tiles.length; i++) this.tiles[i] = 'orange';
+	this.objects = new Array(this.w * this.h);
+	for(var i = 0; i < this.tiles.length; i++){
+		this.tiles[i] = undefined;
+		this.objects[i] = undefined;
+	}
 }
 
-LisoMap.prototype.get = function(x, y){return this.tiles[this.w * y + x]; };
-LisoMap.prototype.set = function(x, y, v){this.tiles[this.w * y + x] = v; };
+LisoMap.prototype.resize = function(nw, nh){
+	if(nw == this.w && nh == this.h) return;
+	var tiles = new Array(nw * nh);
+	var objects = new Array(nw * nh);
+	for(var y = 0; y < nh; y++){
+		for(var x = 0; x < nw; x++){
+			if(this.inBounds(x, y)){
+				tiles[y*nw + x] = this.getTile(x,y);
+				objects[y*nw + x] = this.getObject(x,y);
+			}else{
+				tiles[y*nw + x] = undefined;
+				objects[y*nw + x] = undefined;
+			}
+		}
+	}
+	this.tiles = tiles;
+	this.objects = objects;
+	this.w = nw;
+	this.h = nh;
+};
+
+LisoMap.prototype.getTile = function(x, y){return this.tiles[this.w * y + x]; };
+LisoMap.prototype.setTile = function(x, y, v){this.tiles[this.w * y + x] = v; };
+LisoMap.prototype.getObject = function(x, y){return this.objects[this.w * y + x]; };
+LisoMap.prototype.setObject = function(x, y, v){this.objects[this.w * y + x] = v; };
+
 LisoMap.prototype.inBounds = function(x, y){return x >= 0 && y >= 0 && x < this.w && y < this.h;};
+LisoMap.prototype.hasTile = function(x, y){return this.getTile(x, y) !== undefined; };
 
 LisoMap.prototype.moveRight = function(scalar){
 	this.focus.iadd(Liso.directionRight().scale(scalar));
@@ -105,6 +134,13 @@ LisoMap.prototype.tileCorner = function(index, pos3d){
 	}else if(index == 3){
 		p3d.z += 1;
 	}
+	p3d.iscale(this.tileSize);
+	return m.multLV3(new LV3(p3d.x, p3d.z, 1));
+};
+
+LisoMap.prototype.position2Screen = function(pos3d){
+	var p3d = pos3d.copy();
+	var m = Liso.iso33(this.focus);
 	p3d.iscale(this.tileSize);
 	return m.multLV3(new LV3(p3d.x, p3d.z, 1));
 };
