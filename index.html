@@ -100,13 +100,40 @@ function map2(){
 }
 
 function drawSelection(){
-	canv.context.translate(hw.x, hw.y);
-	canv.transform(iso33);
 	canv.setStroke('green');
-	//canv.rect(mouseTile.x*map.tileSize, mouseTile.z*map.tileSize, map.tileSize, map.tileSize);
-	if(im !== undefined)
-		canv.dimage(mouseTile.x*map.tileSize, mouseTile.z*map.tileSize, im);
-	canv.resetTransform();
+	var x = new LV3(1, 0, 0), y = new LV3(0, -1, 0), z = new LV3(0, 0, 1);
+	var mt = mouseTile.copy(), mtz = mouseTile.copy().add(z);
+	
+	var points = [mt.copy(), mt.copy().add(x), mt.copy().add(x).add(y), mt.copy().add(y),
+				  mtz.copy(), mtz.copy().add(x), mtz.copy().add(y).add(x), mtz.copy().add(y)];
+	for(var i = 0; i < points.length; i++){
+		points[i] = map.position2Screen(points[i]).add(new LV3(hw.x, hw.y, 0));
+	}
+	
+	var drawPnts = function(a, b){
+		var s = 0.25;
+		var c = points[b].sub(points[a]).scale(s).add(points[a]);
+		var d = points[a].sub(points[b]).scale(s).add(points[b]);
+		a = points[a];
+		b = points[b];
+		canv.line(a.x, a.y, c.x, c.y);
+		canv.line(b.x, b.y, d.x, d.y);
+	};
+
+	drawPnts(0, 1);
+	drawPnts(1, 2);
+	drawPnts(2, 3);
+	drawPnts(3, 0);
+
+	drawPnts(4, 0);
+	drawPnts(3, 7);
+	drawPnts(1, 5);
+	drawPnts(2, 6);
+
+	drawPnts(4, 5);
+	drawPnts(5, 6);
+	drawPnts(6, 7);
+	drawPnts(7, 4);
 
 }  
 
@@ -146,7 +173,7 @@ function draw(){
 		ann.iadd(new LV3(hw.x, hw.y, 0));
 		canv.line(ann.x, ann.y, ann.x, ann.y-40);
 	}
-	var tmp = map.position2Screen(new LV3(5.5, 0, 2.5));
+	var tmp = map.position2Screen(new LV3(5.5, 1, 2.5));
 	tmp.iadd(new LV3(hw.x, hw.y, 0));
 	canv.line(tmp.x, tmp.y, 0, 0);
 	drawOutline();

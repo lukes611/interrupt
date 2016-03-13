@@ -140,9 +140,9 @@ LisoMap.prototype.tileCorner = function(index, pos3d){
 
 LisoMap.prototype.position2Screen = function(pos3d){
 	var p3d = pos3d.copy();
-	var m = Liso.iso33(this.focus);
+	var m = Liso.iso44(this.focus);
 	p3d.iscale(this.tileSize);
-	return m.multLV3(new LV3(p3d.x, p3d.z, 1));
+	return m.multLV3(p3d);
 };
 
 
