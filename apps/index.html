@@ -1,10 +1,10 @@
 <html>
 
 <head>
-<script src="code/basics/LLA.js"></script>
-<script src="code/basics/jq.js"></script>
-<script src="code/basics/LCanvas.js"></script>
-<script src="code/basics/Liso.js"></script>
+<script src="../code/basics/LLA.js"></script>
+<script src="../code/basics/jq.js"></script>
+<script src="../code/basics/LCanvas.js"></script>
+<script src="../code/basics/Liso.js"></script>
 </head>
 
 <body style="padding:0px;margin:0px;">
@@ -34,7 +34,7 @@ function addFocus(){
 var count = 0;
 var canv = new LCanvas(960, 540);
 var im = undefined;
-LCanvas.image('tile.png', 50, 50, function(imIn){
+LCanvas.image('../data/images/woodTile.png', 100, 100, function(imIn){
 	im = imIn;
 });
 document.body.appendChild(canv.canvas);
@@ -99,9 +99,10 @@ function map2(){
 
 }
 
-function drawSelection(){
+function drawSelection(tsize){
+	if(tsize === undefined) tsize = 1;
 	canv.setStroke('green');
-	var x = new LV3(1, 0, 0), y = new LV3(0, -1, 0), z = new LV3(0, 0, 1);
+	var x = new LV3(tsize, 0, 0), y = new LV3(0, -tsize, 0), z = new LV3(0, 0, tsize);
 	var mt = mouseTile.copy(), mtz = mouseTile.copy().add(z);
 	
 	var points = [mt.copy(), mt.copy().add(x), mt.copy().add(x).add(y), mt.copy().add(y),
@@ -165,7 +166,7 @@ function draw(){
 
 	map1();
 	//map2();
-	drawSelection();
+	drawSelection(2);
 	canv.resetTransform();
 	canv.setStroke('green');
 	for(var i = 0; i < 4; i++){
