@@ -12,6 +12,10 @@ LV functionality:
 	dist
 	round/floor
 	mag
+	interpolateTo (target, time) interpolates this point to target given time (0-1)
+LV2
+	static fromAngle -> takes angle in degrees, returns LV2
+	getAngle -> returns the angle given our normalized LV2
 LV3:
 	cross/icross
 
@@ -43,6 +47,8 @@ function LV2(x, y){
 	this.x = x;
 	this.y = y;
 }
+
+LV2.rad2deg = 57.295779513082320;
 
 LV2.prototype.toString = function(){
 	return '[' + this.x + ',' + this.y + ']';
@@ -141,6 +147,30 @@ LV2.prototype.iunit = function(){
 	this.y /= m;
 };
 
+LV2.prototype.interpolateTo = function(target, time){
+	var to = target.copy();
+	to.isub(this);
+	to.iscale(time);
+	to.iadd(this);
+	return to;
+}
+
+LV2.fromAngle = function(angle){
+	var rv = new LV2(0,0);
+	angle /= LV2.rad2deg;
+	rv.x = Math.cos(angle);
+	rv.y = Math.sin(angle);
+	return rv;
+}
+
+LV2.prototype.getAngle = function(){
+	var angle = LV2.rad2deg * Math.atan(this.y / this.x);
+	if(this.x < 0.0)
+		angle += 180.0;
+	else if(y < 0.0)
+		angle += 360.0;
+	return angle;
+}
 
 // LV3
 
