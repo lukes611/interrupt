@@ -24,6 +24,7 @@ LMat
 	toString
 	i/transpose
 	mult
+	dist
 	imult
 	multLV2
 	multLV3	
@@ -127,6 +128,17 @@ LV2.prototype.iround = function(){
 LV2.prototype.ifloor = function(){
 	this.x = Math.floor(this.x);
 	this.y = Math.floor(this.y);
+};
+
+LV2.prototype.unit = function(){
+	var m = Math.sqrt(this.x * this.x + this.y * this.y);
+	return new LV2(this.x / m, this.y / m);	
+};
+
+LV2.prototype.iunit = function(){
+	var m = Math.sqrt(this.x * this.x + this.y * this.y);
+	this.x /= m;
+	this.y /= m;
 };
 
 

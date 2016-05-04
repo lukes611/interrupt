@@ -1,13 +1,52 @@
 <html>
 <head>
-	
+	<script src="../../code/basics/LLA.js"></script>
+	<script src="../../code/basics/jq.js"></script>
+	<script src="../../code/basics/LCanvas.js"></script>
+	<script src="../../code/basics/Liso.js"></script>
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-needs:
-window, list of images, list of colors
-click inc dec buttons to modify the sizes of tiles
-name for type of tile
+<script>
+$(document).ready(function(){
+	var screenSize = new LV2(640, 480);
+	var map = new LisoMap(1,1);
+	var c = new LCanvas(screenSize.x, screenSize.y);
+	$('#canvasOut').append(c.canvas);
 
+
+	c.setFill('black');
+	c.rectf(0, 0, screenSize.x, screenSize.y);
+	
+
+
+})
+</script>
+<div id="mainSection">
+	<div id="canvasOut">
+	</div>
+	<div id="controlSection" >
+		<div class="uinpName">name:</div> <input class="userInp" type="text" value="default" /><br/>
+		<div class="uinpName">width:</div><input class="userInp" type="number" value="1"/><br/>
+		<div class="uinpName">height:</div><input class="userInp" type="number" value="1" /><br/>
+		<div class="uinpName">image:</div><div><input type="radio" name="tileType" /></div><br/>
+		<div class="uinpName">color:</div><div><input type="radio" name="tileType" checked /></div><br/>
+		<div class="uinpName">color:</div><input class="userInp" type="color" /><br/>
+		<div>
+		images go here
+		</div>
+		<button id="saveButton">save</button>
+	</div>
+	<div id="description" >
+		<pre>
+Tile Creator
+Create custom tiles here, save to a png image for fast tile drawing and map creation.
+
+		</pre>
+	</div>
+
+</div>
+needs:
 click a tile to edit it's parameters
 save button
 
@@ -16,7 +55,7 @@ details about tile:
 	size: w, h
 	im-name:
 	x, y with respect to tile corner
-	
+
 
 </body>
 </html>
