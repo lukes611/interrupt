@@ -1,0 +1,18 @@
+for new game:
+	complete game engine:
+		LLA -> 
+		sprites ->
+		Canvas -> 
+		Poly2d ->
+		Touch/KB/Click ->
+		sound ->
+		collision ->
+		physics ->
+		3d drawing -> 3js
+		3d to iso conversion ->  
+		labels / buttons etc...
+	do focus engine for game
+		planets -> spheres / polys : poly2d, collision
+		movement -> move from one planet to another : physx (mayb?)
+		animation steps -> provide feedback so graphx can be done
+	redo rwl 
